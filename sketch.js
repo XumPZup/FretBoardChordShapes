@@ -1,8 +1,7 @@
-
 let w = window.innerWidth;
 w -= w/100;
 let h = window.innerHeight;
-let W; // Length of the shortest side of the screen 
+let W; // Length of the shortest side of the screen
 let neck; // Neck object
 let neck_w, neck_h; // Width and height of the neck
 let neck_frets = 21
@@ -32,7 +31,7 @@ function setup() {
 	
 	neck_w = w / 1.1;
 	neck_h = W / 5;	
-	offset = W/3;
+	offset = h/3;
 
 	neck_size_input.value = neck_h;
 }
@@ -53,13 +52,13 @@ function update_neck() {
 	let neck_info = neck.draw_neck(neck_w, neck_h, W, offset, neck_direction, strings_direction);
 	let x = neck_info[0];
 	let y = neck_info[1];
-	let h_space = neck_info[2]; 
+	let h_space = neck_info[2];
 	let v_space = neck_info[3] * neck_direction;
 	// Display shape
 	neck.display_shape(note + ' ' + chord, x, y, h_space, v_space, W/40);
-	draw_legend();
+	draw_legend(y);
 
-	text(note + chord, w/2, h/5 + offset);
+	text(note + chord, w/2, y - W/10);
 }
 
 
@@ -85,17 +84,17 @@ function load_inputs() {
 
 
 
-function draw_legend() {
+function draw_legend(y) {
 	let x0 = W/20;
-	let y0 = W/10 + offset;
-	let texts = ['1st', '3rd', '5th', '7th', '6th or 13th', '9th', '11th', 'Passing tones']; 
+	let y0 = y - W/5
+	let texts = ['1st', '3rd', '5th', '7th', '6th or 13th', '9th', '11th', 'Passing tones'];
 	let tones = [0, 2, 4, 6, 5, 1, 3, 100];
 	textSize(W/60);
 	noStroke();
 	// Draw colors correspondents to the tones
 	tones.forEach((k, i) => {
 		if (i == 4) {
-			y0 = W/10 + offset;
+			y0 = y - W/5;
 			x0 += W/10;
 		}
 		fill(TonesColors[k][0], TonesColors[k][1], TonesColors[k][2])
@@ -112,7 +111,7 @@ function draw_legend() {
 
 
 function mouseClicked() {
-	if (mouseY < h / 3 && mouseX < w / 2) {
+	if (mouseY < h / 2 && mouseX < w / 2) {
 		overlay.style.display == 'none' ? overlay.style.display = 'block' : overlay.style.display = 'none';
 	}
 }
