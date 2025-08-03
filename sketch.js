@@ -10,7 +10,7 @@ let neck_direction = 1;
 let strings_direction = 1;
 let tuning = 'standard';
 let offset = 0;
-let overlay, neck_direction_box, strings_direction_box, neck_size_input, neck_frets_input, note_select, chord_select, tuning_select, update_button;
+let overlay, neck_direction_box, strings_direction_box, neck_size_input, neck_frets_input, note_select, chord_select, tuning_select, close_button, update_button, show_menu_button;
 
 
 function setup() {
@@ -23,8 +23,8 @@ function setup() {
 		W = h;
 	}
 	const container = document.getElementById('canvas-container');
-    const c = createCanvas(w, h);
-    c.parent(container);
+	const c = createCanvas(w, h);
+	c.parent(container);
 	load_inputs();
 	background(0);
 	stroke(255);
@@ -34,6 +34,7 @@ function setup() {
 	offset = h/3;
 
 	neck_size_input.value = neck_h;
+	update_neck();
 }
 
 
@@ -58,28 +59,47 @@ function update_neck() {
 	neck.display_shape(note + ' ' + chord, x, y, h_space, v_space, W/40);
 	draw_legend(y);
 
+	textSize(W/20);
 	text(note + chord, w/2, y - W/10);
 }
 
 
 function load_inputs() {
 	overlay = document.getElementById('overlay-interface');
-	
+
+	// Inputs and checkboxes
 	let inputs = overlay.getElementsByTagName('input');
 	neck_direction_box = inputs[0];
 	strings_direction_box = inputs[1];
 	neck_size_input = inputs[2];
 	neck_frets_input = inputs[3];
 	
+	// Selects
 	let selects = overlay.getElementsByTagName('select');
-	
 	tuning_select = selects[0];
 	note_select = selects[1];
 	chord_select = selects[2];
+	
+	// Buttons
+	let buttons = overlay.getElementsByTagName('button');
+	close_button = buttons[0];
+	update_button = buttons[1];
 
-	update_button = overlay.getElementsByTagName('button')[0];
+	// Show menu
+	show_menu_button = document.getElementById('overlay-menu');
 
+	// Update neck event
 	update_button.addEventListener('click', update_neck);
+	// Clse menu event
+	close_button.addEventListener('click', () => {
+		overlay.style.display = 'none';
+		show_menu_button.style.display = 'block';
+	});
+	// Show menu envent
+	show_menu_button.addEventListener('click', () => {
+		show_menu_button.style.display = 'None';
+		overlay.style.display = 'block';
+	});
 }
 
 
@@ -103,10 +123,10 @@ function draw_legend(y) {
 		text(texts[i], x0 + W/40, y0+W/120);
 		y0 += W/30;
 	});
-
+	/*
 	fill(255);
 	textSize(W/20);
-	text('Tap here to show and hide the menu', W/20, h/2 - W/3)
+	text('Tap here to show and hide the menu', W/20, h/2 - W/3)*/
 }
 
 
